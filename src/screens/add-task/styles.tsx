@@ -8,8 +8,11 @@ const  styles = StyleSheet.create({
         backgroundColor:colors.white
     },
     contentContainerStyle:{
-        flex:1,
-        padding:mvs(20)
+        padding:mvs(20),
+        paddingTop:mvs(100),
+    },
+    button:{
+        marginTop:mvs(100),
     }
 });
 export default styles;

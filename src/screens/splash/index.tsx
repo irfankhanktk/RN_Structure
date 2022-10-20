@@ -8,6 +8,7 @@ type props = NativeStackScreenProps<RootStackParamList, 'Splash'>;
 import Config from 'react-native-config';
 import { useAppDispatch, useAppSelector } from './../../hooks/use-store';
 import Regular from '../../typography/regular-text';
+import { SERVICES } from '../../utils';
 
 const Splash = (props: props) => {
   const {navigation} =props;
@@ -17,14 +18,17 @@ const Splash = (props: props) => {
   React.useEffect(() => {
 
     (async()=>{
-      let screen:'Login'|'Home' = 'Home';
-      AsyncStorage.getItem('@user').then((res:any)=>{
-        const user = JSON.parse(res);
-        if(user){
+      let screen:'Login'|'Home' = 'Login';
+      SERVICES.getItem('@user').then((userId:any)=>{
+      
+        console.log('userId in splash',userId);
+        
+        if(userId){
            screen='Home';
+            // getUserData();
         }
         setTimeout(() => {
-          navigation?.navigate(screen);
+          navigation?.replace(screen);
         }, 2000);
        })
     })()

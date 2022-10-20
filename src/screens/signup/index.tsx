@@ -1,32 +1,33 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react';
-import { Alert, View } from 'react-native';
+import { View } from 'react-native';
 import { KeyboardAvoidScrollview } from '../../components/atoms/keyboard-avoid-scrollview';
 import { PrimaryButton } from '../../components/atoms/buttons';
 import AppHeader from '../../components/atoms/headers/index';
 import PrimaryInput from '../../components/atoms/inputs';
 import RootStackParamList from '../../types/navigation-types/root-stack';
 import styles from './styles';
-import { onLoginPress } from '../../services/firebase/firebase-actions';
 import Medium from '../../typography/medium-text';
+import { createUserWithEmailAndPassword } from '../../services/firebase/index';
+import { onSignupPress } from '../../services/firebase/firebase-actions';
 import { useAppDispatch, useAppSelector } from '../../hooks/use-store';
-type props = NativeStackScreenProps<RootStackParamList, 'Login'>;
+type props = NativeStackScreenProps<RootStackParamList, 'Signup'>;
 
-const Login = (props: props) => {
+const Signup = (props: props) => {
   const { navigation } = props;
   const dispatch=useAppDispatch();
-  const state =useAppSelector(s=>s?.user);
-  console.log('state::::',state);
-  
+  // const state =useAppSelector(s=>s?.user);
   const [values, setValues] = React.useState({
+    name:'',
     email: '',
     password: '',
   });
-  
+
   return (
     <View style={styles.container}>
-      <AppHeader title="Sign-in" />
+      <AppHeader back title="Sign-up" />
       <KeyboardAvoidScrollview contentContainerStyle={styles.contentContainerStyle}>
+        <PrimaryInput  label={'Full Name'} onChangeText={(str) => setValues({ ...values, name: str })} value={values.name} />
         <PrimaryInput keyboardType={'email-address'} label={'Email'} onChangeText={(str) => setValues({ ...values, email: str })} value={values.email} />
         <PrimaryInput
           secureTextEntry
@@ -34,11 +35,11 @@ const Login = (props: props) => {
           label={'Password'}
           onChangeText={(str) => setValues({ ...values, password: str })}
           value={values.password} />
-        <PrimaryButton disabled={!values?.email||!values?.password} title={'Login'} onPress={()=>dispatch(onLoginPress(values?.email,values?.password,navigation))} containerStyle={styles.button} />
-        <Medium style={styles.accountText} onPress={()=>props?.navigation?.navigate('Signup')} label={'Register an account'}/>
+        <PrimaryButton disabled={!values?.email||!values?.password||!values.name} title={'Signup'} onPress={() =>dispatch(onSignupPress(values?.name,values?.email,values?.password))} containerStyle={styles.button} />
+        <Medium style={styles.accountText} onPress={props?.navigation?.goBack} label={'Already have an account'}/>
       </KeyboardAvoidScrollview>
     </View>
 
   );
 };
-export default Login;
+export default Signup;

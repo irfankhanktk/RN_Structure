@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, StyleSheet, Text, TextStyle } from 'react-native';
+import { ColorValue, StyleProp, StyleSheet, Text, TextStyle } from 'react-native';
 import fonts from '../assets/fonts';
 import {colors} from '../config/colors';
 import { mvs } from '../config/metrices';
@@ -7,10 +7,10 @@ type FcProps = {
   label?: string | number;
   numberOfLines?: number;
   fontSize?: number;
-  color?: string;
-  onPress?: () => void;
+  color?: ColorValue | undefined
+  onPress?: (() => void) | undefined;
   style?: StyleProp<TextStyle>;
-  children?: any;
+  children?:  JSX.Element | JSX.Element[]
 };
 const Regular: React.FC<FcProps> = ({
   label,

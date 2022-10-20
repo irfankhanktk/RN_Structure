@@ -1,10 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import  userSlice  from './reducers/user-reducer'
+import logger from 'redux-logger'
 
 export const store = configureStore({
   reducer: {
-    user:userSlice
+    user:userSlice,
+
   },
+  // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
 });
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>

@@ -8,8 +8,9 @@ import {horizontalAnimation} from '../utils';
 import Splash from '../screens/splash';
 import RootStackParamList from '../types/navigation-types/root-stack';
 import Home from '../screens/home';
-import Login from '../screens/login';
 import AddTask from '../screens/add-task';
+import Login from '../screens/login';
+import Signup from '../screens/signup';
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export const RootNavigator = () => {
@@ -25,6 +26,7 @@ export const RootNavigator = () => {
         screenOptions={horizontalAnimation}>
         <Stack.Screen name="Splash" component={Splash} />
         <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Signup" component={Signup} />
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="AddTask" component={AddTask} />
       </Stack.Navigator>

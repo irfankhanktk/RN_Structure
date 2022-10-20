@@ -11,9 +11,9 @@ export const userSlice = createSlice({
     setUserInfo: (state, action) => {
       state.userInfo = action.payload
     },
-    // demoAsync: (state, action) => {
-    //   state.userInfo = action.payload
-    // },
+    demoAsync: (state, action) => {
+      state.userInfo = action.payload
+    },
   },
 })
 // Action creators are generated for each case reducer function

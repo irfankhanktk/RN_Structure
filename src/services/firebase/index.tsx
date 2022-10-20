@@ -1,12 +1,46 @@
 import { WhereFilterOp } from '@firebase/firestore-types';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import firebase from '@react-native-firebase/app';
+import auth from '@react-native-firebase/auth';
 import Rnfirestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
+import { setUserInfo } from '../../store/reducers/user-reducer';
 import { SERVICES } from '../../utils';
-export const uploadFile = async (image:string) => {
-    try {
+
+export const createUserWithEmailAndPassword = async (name:string,email:string,password:string) => {
+  try {
+   const res= await auth().createUserWithEmailAndPassword(email, password);
+   console.log('RES: SIGNUP',res);
+   
+   return res;
+  } catch (error: any) {
+    if (error.code === 'auth/email-already-in-use') {
+      console.log('That email address is already in use!');
+    }else if (error.code === 'auth/invalid-email') {
+      console.log('That email address is invalid!');
+    }
+    throw SERVICES._returnError(error);
+  }
+}
+export const signInWithEmailAndPassword = async (email:string,password:string) => {
+
+  try {
+    const res=await auth().signInWithEmailAndPassword(email, password);
+    return res;
+  } catch (error: any) {
+    if (error.code === 'auth/email-already-in-use') {
+      console.log('That email address is already in use!');
+    }else if (error.code === 'auth/invalid-email') {
+      console.log('That email address is invalid!');
+    }
+    throw SERVICES._returnError(error);
+  }
+}
+
+export const uploadFile = async (image: string) => {
+  try {
     if (!image) {
-     throw 'image is not selected'
+      throw 'image is not selected'
     }
     const uploadUri = image;
     let filename = uploadUri.substring(uploadUri.lastIndexOf('/') + 1);
@@ -16,26 +50,26 @@ export const uploadFile = async (image:string) => {
     const storageRef = storage().ref(`photos/${filename}`);
     const task = storageRef.putFile(uploadUri);
     task.on('state_changed', taskSnapshot => {
-        const percent =(taskSnapshot.bytesTransferred/taskSnapshot.totalBytes)*100;
-      console.log(percent,'% bytes transferred');
+      const percent = (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) * 100;
+      console.log(percent, '% bytes transferred');
     });
-      await task;
-      const url: string = await storageRef.getDownloadURL();
-      return url;
-    } catch (error) {
-      throw error;
-    }
-  };
-  
-export async function insertBatch(collection = 'events', array:any[] = [],is_doc=true) {
+    await task;
+    const url: string = await storageRef.getDownloadURL();
+    return url;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export async function insertBatch(collection = 'events', array: any[] = [], is_doc = true) {
   try {
-    const db =Rnfirestore();
+    const db = Rnfirestore();
     const batch = db.batch();
     array.map(doc => {
-      if(is_doc){
+      if (is_doc) {
         var docRef = db.collection(collection).doc(doc?.event_id); //automatically generate unique id
         batch.set(docRef, doc);
-      }else{
+      } else {
         var docRef = db.collection(collection).doc(); //automatically generate unique id
         batch.set(docRef, doc);
       }
@@ -55,7 +89,7 @@ export const saveData = async (
     const ref = Rnfirestore().collection(collection);
 
     const obj = SERVICES._removeEmptyKeys(jsonObject);
-    const res = await ref.doc(doc).set(obj, {merge: true});
+    const res = await ref.doc(doc).set(obj, { merge: true });
     return res;
   } catch (error) {
     console.log('error::', error);
@@ -86,9 +120,9 @@ export const getData = (collection: string, doc: string) => {
       if (doc.exists) {
         return doc.data();
       } else {
-        return false;
+        return 'user does not exists';
       }
-    });
+    }).catch(error=>{throw error});
 };
 export const getDatabyKey = async (
   collection: string,
@@ -105,7 +139,7 @@ export const getDatabyKey = async (
       return [];
     }
   } catch (error) {
-    throw SERVICES?._returnError(error);
+    throw error;
   }
 };
 export const getAllOfCollection = async (collection: string) => {
@@ -170,9 +204,9 @@ export const addToArray = async (
     // docRef.update({
     //   [array]: firebase.firestore.FieldValue.arrayUnion(value),
     // });
-    saveData(collection, doc, {[array]: [...docData.data()[array], value]});
+    saveData(collection, doc, { [array]: [...docData.data()[array], value] });
   } else {
-    saveData(collection, doc, {[array]: [value]});
+    saveData(collection, doc, { [array]: [value] });
   }
 };
 export const filterArrayCollections = async (
