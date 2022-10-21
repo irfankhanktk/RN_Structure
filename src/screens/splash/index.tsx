@@ -21,8 +21,6 @@ const Splash = (props: props) => {
       let screen:'Login'|'Home' = 'Login';
       SERVICES.getItem('@user').then((userId:any)=>{
       
-        console.log('userId in splash',userId);
-        
         if(userId){
            screen='Home';
             // getUserData();

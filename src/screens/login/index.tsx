@@ -16,7 +16,6 @@ const Login = (props: props) => {
   const { navigation } = props;
   const dispatch=useAppDispatch();
   const state =useAppSelector(s=>s?.user);
-  console.log('state::::',state);
   
   const [values, setValues] = React.useState({
     email: '',
