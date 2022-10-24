@@ -8,7 +8,7 @@ import RootStackParamList from "../../types/navigation-types/root-stack";
 import { SERVICES } from "../../utils";
 import { getData } from './index';
 
-export const onLoginPress = (email: string, password: string,props:NavigationProps) => {
+export const onLoginPress = (email: string, password: string,props:any) => {
     return async (dispatch: AppDispatch, getState:()=> RootState) => {
         try {
             const res = await signInWithEmailAndPassword(email, password);
@@ -24,7 +24,7 @@ export const onLoginPress = (email: string, password: string,props:NavigationPro
         }
     }
 }
-export const onSignupPress =  (name: string, email: string, password: string,props:NavigationProps) => {
+export const onSignupPress =  (name: string, email: string, password: string,props:any) => {
     return async (dispatch: AppDispatch, getState:()=>  RootState) => {
         try {
             const res = await createUserWithEmailAndPassword(name, email, password);
