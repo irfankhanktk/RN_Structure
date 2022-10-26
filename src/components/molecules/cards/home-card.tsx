@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { PureComponent } from 'react';
 import { View, StyleProp, TextStyle, StyleSheet } from 'react-native';
 import { Complete } from '../../../assets/icons';
@@ -12,6 +13,7 @@ type props ={
     time?:string
     description?:string
     isComplete?:boolean
+    onEditPress:()=>void
 }
  const HomeCard =({
 style,
@@ -19,6 +21,7 @@ time='04:00 pm',
 title='task title',
 description='Here is description',
 isComplete=false,
+onEditPress,
 }:props)=>{
   return(
     <View style={[styles.container]}>
@@ -31,7 +34,7 @@ isComplete=false,
         <Regular style={[styles.time]} label={description}/>
       </View>
       <View style={styles.middle}>
-        <Medium style={[styles.edit]} label={'Edit'}/>
+        <Medium onPress={onEditPress} style={[styles.edit]} label={'Edit'}/>
       </View>
       <View style={styles.right}>
         <Bold style={[styles.title]} label={title}/>

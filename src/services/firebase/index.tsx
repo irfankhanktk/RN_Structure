@@ -7,6 +7,8 @@ import storage from '@react-native-firebase/storage';
 import { setUserInfo } from '../../store/reducers/user-reducer';
 import { SERVICES } from '../../utils';
 
+export const getCurrentUserId=()=>auth()?.currentUser?.uid;
+
 export const createUserWithEmailAndPassword = async (name:string,email:string,password:string) => {
   try {
    const res= await auth().createUserWithEmailAndPassword(email, password);
@@ -120,9 +122,9 @@ export const getData = (collection: string, doc: string) => {
       if (doc.exists) {
         return doc.data();
       } else {
-        return 'user does not exists';
+        throw 'user does not exists';
       }
-    }).catch(error=>{throw error});
+    }).catch(error=>{throw SERVICES?._returnError(error)});
 };
 export const getDatabyKey = async (
   collection: string,

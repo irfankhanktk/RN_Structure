@@ -6,7 +6,7 @@ import { colors } from '../../../config/colors'
     color?: ColorValue | undefined
 }
 export const Loader = (props:props) => {
-    const {size='small',color=colors.white}=props;
+    const {size='small',color=colors.primary}=props;
     return (
         <View style={styles.container}>
             <ActivityIndicator size={size} color={color}/>
