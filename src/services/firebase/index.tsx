@@ -63,25 +63,7 @@ export const uploadFile = async (image: string) => {
   }
 };
 
-export async function insertBatch(collection = 'events', array: any[] = [], is_doc = true) {
-  try {
-    const db = Rnfirestore();
-    const batch = db.batch();
-    array.map(doc => {
-      if (is_doc) {
-        var docRef = db.collection(collection).doc(doc?.event_id); //automatically generate unique id
-        batch.set(docRef, doc);
-      } else {
-        var docRef = db.collection(collection).doc(); //automatically generate unique id
-        batch.set(docRef, doc);
-      }
-    });
-    return batch.commit();
-  } catch (error) {
-    console.log('error:', error);
-    throw error;
-  }
-}
+
 export const saveData = async (
   collection: string,
   doc: string | undefined,
@@ -120,6 +102,19 @@ export const deleteDocument = async (
   try {
     const ref = Rnfirestore().collection(collection);
     await ref.doc(docId).delete();
+  } catch (error) {
+    console.log('error::', error);
+    throw SERVICES?._returnError(error);
+  }
+};
+export const isDocumentExists = async (
+  collection: string,
+  docId?: string,
+) => {
+  try {
+    const ref = Rnfirestore().collection(collection);
+   const documentSnapshot=await ref.doc(docId).get();
+    return documentSnapshot.exists;
   } catch (error) {
     console.log('error::', error);
     throw SERVICES?._returnError(error);
@@ -201,7 +196,7 @@ export const removeItemfromArrayValue = async (
 
   if (docData.exists && docData && docData.data()[array] != undefined) {
     docRef.update({
-      [array]: firebase.firestore.FieldValue.arrayRemove(value),
+      [array]: Rnfirestore.FieldValue.arrayRemove(value),
     });
   }
 };
@@ -211,16 +206,30 @@ export const addToArray = async (
   array: string,
   value: any,
 ) => {
-  let docRef = Rnfirestore().collection(collection).doc(doc);
-  let docData: any = await docRef.get();
-
-  if (docData.exists && docData.data()[array] != undefined) {
-    // docRef.update({
-    //   [array]: firebase.firestore.FieldValue.arrayUnion(value),
-    // });
-    saveData(collection, doc, { [array]: [...docData.data()[array], value] });
-  } else {
-    saveData(collection, doc, { [array]: [value] });
+  try {
+    let docRef = Rnfirestore().collection(collection).doc(doc);
+      docRef.update({
+        [array]: Rnfirestore.FieldValue.arrayUnion(value),
+      });
+    
+  } catch (error) {
+    throw SERVICES._returnError(error)
+  }
+};
+export const removeFromArray = async (
+  collection: string,
+  doc: string,
+  arrayName: string,
+  value: any,
+) => {
+  try {
+    let docRef = Rnfirestore().collection(collection).doc(doc);
+      docRef.update({
+        [arrayName]: Rnfirestore.FieldValue.arrayRemove(value),
+      });
+    
+  } catch (error) {
+    throw SERVICES._returnError(error)
   }
 };
 export const filterArrayCollections = async (
@@ -276,3 +285,48 @@ export const filterCollections = async (
     throw new Error(SERVICES._returnError(error));
   }
 };
+
+//you can execute multiple write operations as a single batch that contains any combination of set,
+// update, or delete operations. A batch of writes completes atomically and can write to multiple documents.
+export async function insertBatch(collection :string, array: any[] = [], is_doc = true) {
+  try {
+    const db = Rnfirestore();
+    const batch = db.batch();
+    array.map(doc => {
+      if (is_doc) {
+        var docRef = db.collection(collection).doc(doc?.id); //set doc with your own unique id
+        batch.set(docRef, doc);
+      } else {
+        var docRef = db.collection(collection).doc(); //automatically generate unique id
+        batch.set(docRef, doc);
+      }
+    });
+    return batch.commit();
+  } catch (error) {
+    console.log('error:', error);
+    throw new Error(SERVICES._returnError(error));
+  }
+}
+
+//transaction example for like post
+export const onPostLike=(postId:string) =>{
+  try {
+    
+    // Create a reference to the post
+    const postReference = Rnfirestore().doc(`posts/${postId}`);
+  
+    return Rnfirestore().runTransaction(async transaction => {
+      // Get post data first
+      const postSnapshot = await transaction.get(postReference);
+  
+      if (!postSnapshot.exists) {
+        throw 'Post does not exist!';
+      }else
+      transaction.update(postReference, {
+        likes: postSnapshot?.data()?.likes + 1,
+      });
+    });
+  } catch (error) {
+    throw new Error(SERVICES._returnError(error));
+  }
+}
