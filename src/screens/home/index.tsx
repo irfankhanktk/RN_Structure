@@ -7,6 +7,7 @@ import { Loader } from '../../components/atoms/loader';
 import HomeCard from '../../components/molecules/cards/home-card';
 import { useAppSelector } from '../../hooks/use-store';
 import { useTasks } from '../../hooks/use-tasks';
+import { onDeleteTask } from '../../services/firebase/firebase-actions';
 import { Task } from '../../types/entities-types';
 import RootStackParamList from '../../types/navigation-types/root-stack';
 import styles from './styles';
@@ -20,10 +21,8 @@ const Home = (props: props) => {
   const { navigation } = props;
   const userInfo =useAppSelector(s=>s?.user?.userInfo);
   const {tasks,loading}=useTasks();
-  console.log('tasks',tasks);
-  
   const renderItem = React.useCallback(({ item, index }: RenderProps) => {
-    return <HomeCard {...item} onEditPress={()=>props?.navigation?.navigate('AddTask',item)}/>;
+    return <HomeCard onDeletePress={()=>onDeleteTask(item?.id)} {...item} onEditPress={()=>props?.navigation?.navigate('AddTask',item)}/>;
   }, []);
   console.log('loading:>',loading);
   

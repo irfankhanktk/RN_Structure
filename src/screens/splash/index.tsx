@@ -16,7 +16,8 @@ const Splash = (props: props) => {
   const {navigation} =props;
   const dispatch =useAppDispatch();
   const store =useAppSelector(s=>s);
-
+  console.log('Config::',Config.BASE_URL);
+  
   React.useEffect(() => {
 
     (async()=>{

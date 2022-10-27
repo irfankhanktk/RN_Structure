@@ -1,5 +1,5 @@
 import { Alert } from "react-native";
-import { createUserWithEmailAndPassword, saveData, signInWithEmailAndPassword } from ".";
+import { createUserWithEmailAndPassword, deleteDocument, saveData, signInWithEmailAndPassword } from ".";
 import { COLLECTIONS, STORAGEKEYS } from "../../config/constants";
 import { AppDispatch, RootState } from "../../store";
 import { setUserInfo } from "../../store/reducers/user-reducer";
@@ -65,8 +65,16 @@ export const getUserData =  (userId:string) => {
             const res = await getData(COLLECTIONS.users,userId);
             dispatch(setUserInfo(res));
         } catch (error: any) {
-            console.log('error in onAddTaskPress', error);
+            console.log('error in getUserData', error);
             Alert.alert('', error,);
         }
     }
+}
+export const onDeleteTask =  async(docId?:string) => {
+        try {
+          await deleteDocument(COLLECTIONS.tasks,docId);
+        } catch (error: any) {
+            console.log('error in onDeleteTask', error);
+            Alert.alert('', error,);
+        }
 }

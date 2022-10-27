@@ -113,7 +113,19 @@ export const updateDocument = async (
     throw error;
   }
 };
-export const getData = (collection: string, doc: string) => {
+export const deleteDocument = async (
+  collection: string,
+  docId?: string,
+) => {
+  try {
+    const ref = Rnfirestore().collection(collection);
+    await ref.doc(docId).delete();
+  } catch (error) {
+    console.log('error::', error);
+    throw SERVICES?._returnError(error);
+  }
+};
+export const getData = async(collection: string, doc: string) => {
   return Rnfirestore()
     .collection(collection)
     .doc(doc)

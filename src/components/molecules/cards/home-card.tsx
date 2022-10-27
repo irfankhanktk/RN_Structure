@@ -7,6 +7,7 @@ import { mvs } from '../../../config/metrices';
 import Bold from '../../../typography/bold-text';
 import Medium from '../../../typography/medium-text';
 import Regular from '../../../typography/regular-text';
+import { Row } from '../../atoms/row';
 type props ={
     style?: StyleProp<TextStyle>
     title?:string
@@ -14,14 +15,15 @@ type props ={
     description?:string
     isComplete?:boolean
     onEditPress:()=>void
+    onDeletePress:()=>void
 }
  const HomeCard =({
 style,
 time='04:00 pm',
 title='task title',
 description='Here is description',
-isComplete=false,
 onEditPress,
+onDeletePress,
 }:props)=>{
   return(
     <View style={[styles.container]}>
@@ -33,9 +35,10 @@ onEditPress,
         <Bold style={[styles.title]} label={title}/>
         <Regular style={[styles.time]} label={description}/>
       </View>
-      <View style={styles.middle}>
+      <Row style={styles.middle}>
         <Medium onPress={onEditPress} style={[styles.edit]} label={'Edit'}/>
-      </View>
+        <Medium onPress={onDeletePress} style={[styles.edit]} label={'Delete'}/>
+      </Row>
       <View style={styles.right}>
         <Bold style={[styles.title]} label={title}/>
       </View>
@@ -71,7 +74,7 @@ const styles = StyleSheet.create({
     padding:mvs(15)
    },
    middle:{
-    width:mvs(80),
+    width:mvs(120),
     padding:mvs(15),
     height:'100%',
    },
