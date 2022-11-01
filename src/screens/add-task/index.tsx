@@ -2,13 +2,13 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react';
 import { View } from 'react-native';
 import { KeyboardAvoidScrollview } from '../../components/atoms/keyboard-avoid-scrollview';
-import { PrimaryButton } from '../../components/atoms/buttons';
 import AppHeader from '../../components/atoms/headers/index';
 import PrimaryInput from '../../components/atoms/inputs';
 import RootStackParamList from '../../types/navigation-types/root-stack';
 import styles from './styles';
 import { onAddTaskPress } from '../../services/firebase/firebase-actions';
 import { useAppDispatch } from '../../hooks/use-store';
+import { PrimaryButton } from '../../components/atoms/buttons';
 type props = NativeStackScreenProps<RootStackParamList, 'AddTask'>;
 
 const AddTask = (props: props) => {

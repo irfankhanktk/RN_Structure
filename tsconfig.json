@@ -10,7 +10,16 @@
       "moduleResolution": "node",
       "noEmit": true,
       "strict": true,
-      "target": "esnext"
+      "target": "esnext",
+      "baseUrl": ".",
+      "paths": {
+        // This needs to be mirrored in babel.config.js
+        // Components is a directory with sub directories
+        "components/*": ["src/components/*"],
+  
+        // We want to expose the exports of the buttons index file
+        "atoms": ["src/components/atoms"]
+      }
     },
     "exclude": [
       "node_modules",
