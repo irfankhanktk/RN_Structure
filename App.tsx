@@ -3,11 +3,11 @@ import React from 'react';
 import {View, Text} from 'react-native';
 import { useColorScheme} from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {RootNavigator} from './src/navigation/root-navigation';
+import {RootNavigator} from 'navigation/root-navigation';
 import {Provider} from 'react-redux'
-import { store } from './src/store';
-import {colors, darkTheme, lightTheme} from './src/config/colors';
-import './src/translation'
+import 'translation'
+import { darkTheme, lightTheme } from 'config/colors';
+import { store } from 'store';
 const App = () => {
   const scheme = useColorScheme();
   const MyTheme = {
