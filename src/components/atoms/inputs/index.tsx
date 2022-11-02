@@ -1,5 +1,5 @@
 import React from 'react'
-import { KeyboardTypeOptions, StyleProp, StyleSheet, TextInput, View, ViewStyle } from 'react-native'
+import { KeyboardTypeOptions, NativeSyntheticEvent, StyleProp, StyleSheet, TextInput, TextInputFocusEventData, View, ViewStyle } from 'react-native'
 import { colors } from '../../../config/colors'
 import { mvs } from '../../../config/metrices'
 import Regular from '../../../typography/regular-text'
@@ -13,6 +13,7 @@ type props = {
     containerStyle?:StyleProp<ViewStyle>
     secureTextEntry?: boolean | undefined
     keyboardType?: KeyboardTypeOptions | undefined
+    onBlur?: ((e: NativeSyntheticEvent<TextInputFocusEventData>) => void) | undefined
 }
  const PrimaryInput = (props: props) => {
     const {
@@ -24,13 +25,14 @@ type props = {
         labelStyle,
         containerStyle,
         secureTextEntry,
-        keyboardType
+        keyboardType,
+        onBlur
 
     } = props;
     return (
         <View style={[styles.Container,containerStyle]}>
             <Regular style={[styles.labelStyle,labelStyle]} label={label}/>
-            <TextInput keyboardType={keyboardType} secureTextEntry={secureTextEntry}  value={value} placeholder={placeholder} onChangeText={onChangeText} style={[styles.textInput,style]}/>
+            <TextInput onBlur={onBlur} keyboardType={keyboardType} secureTextEntry={secureTextEntry}  value={value} placeholder={placeholder} onChangeText={onChangeText} style={[styles.textInput,style]}/>
         </View>
     )
 };
