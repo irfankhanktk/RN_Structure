@@ -7,7 +7,6 @@ import uuid from 'react-native-uuid';
 import { NavigationProps } from '../types/navigation-types';
 // import Geolocation from 'react-native-geolocation-service';
 import RootStackParamList from '../types/navigation-types/root-stack';
-
 export const horizontalAnimation: any = {
   headerShown: false,
   gestureDirection: 'horizontal',
@@ -217,6 +216,7 @@ export const SERVICES = {
   //     return false;
   //   }
   // },
+  
   serialize: (obj: any) => {
     var str = [];
     for (var p in obj)
@@ -283,4 +283,5 @@ export const SERVICES = {
   },
   getMinutesDiff: (a: string, b: string) => moment(b).diff(a, 'm'),
   getUUID: () => uuid?.v4()?.toString(),
+
 };

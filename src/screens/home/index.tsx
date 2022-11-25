@@ -21,10 +21,10 @@ const Home = (props: props) => {
   const { navigation } = props;
   const userInfo =useAppSelector(s=>s?.user?.userInfo);
   const {tasks,loading}=useTasks();
+
   const renderItem = React.useCallback(({ item, index }: RenderProps) => {
     return <HomeCard onDeletePress={()=>onDeleteTask(item?.id)} {...item} onEditPress={()=>props?.navigation?.navigate('AddTask',item)}/>;
   }, []);
-  console.log('loading:>',loading);
   
   if(loading){
     return <Loader/>

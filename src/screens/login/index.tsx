@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react';
-import { Alert, View } from 'react-native';
+import { Alert, Linking, View } from 'react-native';
 import { KeyboardAvoidScrollview } from '../../components/atoms/keyboard-avoid-scrollview';
 import { PrimaryButton } from '../../components/atoms/buttons';
 import AppHeader from '../../components/atoms/headers/index';
@@ -10,6 +10,9 @@ import styles from './styles';
 import { onLoginPress } from '../../services/firebase/firebase-actions';
 import Medium from '../../typography/medium-text';
 import { useAppDispatch, useAppSelector } from '../../hooks/use-store';
+import { openInbox } from "react-native-email-link";
+import { navigationRef } from 'navigation/navigation-ref';
+
 type props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
 const Login = (props: props) => {
@@ -33,7 +36,11 @@ const Login = (props: props) => {
           label={'Password'}
           onChangeText={(str) => setValues({ ...values, password: str })}
           value={values.password} />
-        <PrimaryButton disabled={!values?.email||!values?.password} title={'Login'} onPress={()=>dispatch(onLoginPress(values?.email,values?.password,props))} containerStyle={styles.button} />
+        <PrimaryButton  title={'Login'} onPress={()=>{
+  // console.log('navigationRef.current.getRootState()::',navigationRef?.current?.getRootState());
+
+        //  Linking.openURL('demo://app/AddTask/123');
+        }} containerStyle={styles.button} />
         <Medium style={styles.accountText} onPress={()=>props?.navigation?.navigate('Signup')} label={'Register an account'}/>
       </KeyboardAvoidScrollview>
     </View>

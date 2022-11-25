@@ -14,6 +14,8 @@ type props = NativeStackScreenProps<RootStackParamList, 'AddTask'>;
 const AddTask = (props: props) => {
   const { navigation,route } = props;
   const task =route?.params;
+  console.log('task=>',task);
+  
   const dispatch =useAppDispatch();
   const [values, setValues] = React.useState({
     id:task?.id||'',
