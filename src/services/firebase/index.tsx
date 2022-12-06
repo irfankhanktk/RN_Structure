@@ -191,7 +191,7 @@ export const removeItemfromArrayValue = async (
   array: number,
   value: any,
 ) => {
-  let docRef = await Rnfirestore().collection(collection).doc(doc);
+  let docRef =  Rnfirestore().collection(collection).doc(doc);
   let docData: any = await docRef.get();
 
   if (docData.exists && docData && docData.data()[array] != undefined) {
