@@ -2,9 +2,9 @@ name: IOS build IPA
 
 # Triggered when code is pushed to any branch in a repository
 on: push
-      #  branches:
+        branches:
       #    - '*'
-      #    - '!master'
+          - 'main'
 
 jobs:
 build-ios:
