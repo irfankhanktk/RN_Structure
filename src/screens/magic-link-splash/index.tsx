@@ -3,16 +3,19 @@ import { ActivityIndicator,StyleSheet, Text, View } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import dynamicLinks from '@react-native-firebase/dynamic-links';
 import  AsyncStorage  from '@react-native-async-storage/async-storage';
+import { colors } from '../../config/colors';
+import Headers from 'components/atoms/headers';
 
 const EmailLinkHandler = () => {
   const { loading, error } = useEmailLinkEffect();
-
+  console.log(loading, error);
+  
   // Show an overlay with a loading indicator while the email link is processed
   if (loading || error) {
      return (
       <View style={styles.container}>
         {Boolean(error) && <Text>{error?.message}</Text>}
-        {loading && <ActivityIndicator />}x
+        {loading && <ActivityIndicator size={'small'} color={colors.black} />}
       </View>
     );
   }
@@ -66,20 +69,23 @@ const useEmailLinkEffect = () => {
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(250,250,250,0.33)',
-    justifyContent: 'center',
-    alignItems: 'center',
+    // position: 'absolute',
+    // left: 0,
+    // right: 0,
+    // top: 0,
+    // bottom: 0,
+    // backgroundColor: 'rgba(250,250,250,0.33)',
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    flex:1,
   },
 });
 
-const App = () => (
-  <View>
+const MagicLinkSplash = () => (
+  <View style={{flex:1,backgroundColor:'red'}}>
+   
     <EmailLinkHandler />
     {/* <AppScreens /> */}
   </View>
 );
+export default MagicLinkSplash
