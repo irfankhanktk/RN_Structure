@@ -17,7 +17,6 @@ import {Loader} from '../../components/atoms/loader';
 import HomeCard from '../../components/molecules/cards/home-card';
 import {useAppSelector} from '../../hooks/use-store';
 import {useTasks} from '../../hooks/use-tasks';
-import {onDeleteTask} from '../../services/firebase/firebase-actions';
 import {Task} from '../../types/entities-types';
 import RootStackParamList from '../../types/navigation-types/root-stack';
 import styles from './styles';
@@ -33,27 +32,13 @@ const SearchTab = (props: props) => {
   const userInfo = useAppSelector(s => s?.user?.userInfo);
   const {tasks, loading} = useTasks();
 
-  const renderItem = React.useCallback(({item, index}: RenderProps) => {
-    return (
-      <HomeCard
-        onDeletePress={() => onDeleteTask(item?.id)}
-        {...item}
-        onEditPress={() => props?.navigation?.navigate('AddTask', item)}
-      />
-    );
-  }, []);
-
   if (loading) {
     return <Loader />;
   }
   return (
     <View style={styles.container}>
       <AppHeader title="To-do List" />
-      <FlatList
-        contentContainerStyle={styles.contentContainerStyle}
-        data={tasks}
-        renderItem={renderItem}
-      />
+
       <PlusButton
         onPress={() => props?.navigation?.navigate('AddTask')}
         title="Add"

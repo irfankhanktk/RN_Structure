@@ -16,9 +16,9 @@ import {PlusButton, PrimaryButton} from '../../components/atoms/buttons';
 import AppHeader from '../../components/atoms/headers/index';
 import {Loader} from '../../components/atoms/loader';
 import HomeCard from '../../components/molecules/cards/home-card';
-import { useAppSelector, useAppDispatch } from '../../hooks/use-store';
+import {useAppSelector, useAppDispatch} from '../../hooks/use-store';
 import {useTasks} from '../../hooks/use-tasks';
-import {onDeleteTask, onLogoutPress} from '../../services/firebase/firebase-actions';
+import {onLogoutPress} from '../../services/firebase/firebase-actions';
 import {Task} from '../../types/entities-types';
 import RootStackParamList from '../../types/navigation-types/root-stack';
 import styles from './styles';
@@ -32,18 +32,8 @@ type RenderProps = {
 };
 const UserTab = (props: props) => {
   const userInfo = useAppSelector(s => s?.user?.userInfo);
-  const dispatch =useAppDispatch();
+  const dispatch = useAppDispatch();
   const {tasks, loading} = useTasks();
-
-  const renderItem = React.useCallback(({item, index}: RenderProps) => {
-    return (
-      <HomeCard
-        onDeletePress={() => onDeleteTask(item?.id)}
-        {...item}
-        onEditPress={() => props?.navigation?.navigate('AddTask', item)}
-      />
-    );
-  }, []);
 
   if (loading) {
     return <Loader />;
@@ -51,7 +41,10 @@ const UserTab = (props: props) => {
   return (
     <View style={styles.container}>
       <AppHeader title="To-do List" />
-      <PrimaryButton title={'Logout'} onPress={()=>dispatch(onLogoutPress(props))}/>
+      <PrimaryButton
+        title={'Logout'}
+        onPress={() => dispatch(onLogoutPress(props))}
+      />
     </View>
   );
 };
