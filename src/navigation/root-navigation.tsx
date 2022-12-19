@@ -7,12 +7,10 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {horizontalAnimation} from '../utils';
 import Splash from '../screens/splash';
 import RootStackParamList from '../types/navigation-types/root-stack';
-import Home from '../screens/home';
+import Home from '../screens/home-tab';
 import AddTask from '../screens/add-task';
 import Login from '../screens/login';
 import Signup from '../screens/signup';
-import MagicLinkSplash from 'screens/magic-link-splash';
-import EmailLinkSignIn from 'screens/magic-link';
 import TabNavigator from './tab-navigation';
 const Stack = createNativeStackNavigator<RootStackParamList>();
 

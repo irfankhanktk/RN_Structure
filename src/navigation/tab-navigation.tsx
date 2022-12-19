@@ -1,12 +1,13 @@
-import * as React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Home from 'screens/home';
-import RootStackParamList from './../types/navigation-types/root-stack';
+import * as React from 'react';
+import Home from 'screens/home-tab';
 import AddTask from './../screens/add-task/index';
 
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import TabParamList from '../types/navigation-types/bottom-tab';
+import SearchTab from './../screens/search-tab/index';
+import UserTab from 'screens/user-tab';
 const Tab = createBottomTabNavigator();
 const BottomTab = createNativeStackNavigator<TabParamList>();
 const TabNavigator = () => {
@@ -14,24 +15,25 @@ const TabNavigator = () => {
     <Tab.Navigator
       screenOptions={({route}) => ({
         tabBarIcon: ({focused, color, size}) => {
-          let iconName='Home';
+          let iconName = 'home';
 
-          if (route.name === 'Home') {
-            iconName = focused
-              ? 'home'
-              : 'ios-information-circle-outline';
-          } else if (route.name === 'Search') {
-            iconName = focused ? 'ios-list' : 'ios-list-outline';
+          if (route.name === 'HomeTab') {
+            iconName = 'home';
+          } else if (route.name === 'SearchTab') {
+            iconName = 'search';
+          } else if (route.name === 'UserTab') {
+            iconName = 'user';
           }
 
           // You can return any component that you like here!
-          return <Ionicons name={iconName} size={size} color={color} />;
+          return <FontAwesome name={iconName} size={size} color={color} />;
         },
         tabBarActiveTintColor: 'tomato',
         tabBarInactiveTintColor: 'gray',
       })}>
       <BottomTab.Screen name="HomeTab" component={Home} />
-      <BottomTab.Screen name="SearchTab" component={AddTask} />
+      <BottomTab.Screen name="SearchTab" component={SearchTab} />
+      <BottomTab.Screen name="UserTab" component={UserTab} />
       {/* <Tab.Screen name="Settings" component={SettingsScreen} /> */}
     </Tab.Navigator>
   );
