@@ -13,6 +13,7 @@ import Login from '../screens/login';
 import Signup from '../screens/signup';
 import MagicLinkSplash from 'screens/magic-link-splash';
 import EmailLinkSignIn from 'screens/magic-link';
+import TabNavigator from './tab-navigation';
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export const RootNavigator = () => {
@@ -27,17 +28,18 @@ export const RootNavigator = () => {
         initialRouteName="Login"
         screenOptions={horizontalAnimation}>
         {/* <Stack.Screen name="Splash" component={Splash} /> */}
-        <Stack.Screen name="Splash" component={MagicLinkSplash} />
-        <Stack.Screen name="Login" component={EmailLinkSignIn} />
+        {/* <Stack.Screen name="Splash" component={MagicLinkSplash} /> */}
+        {/* <Stack.Screen name="Login" component={EmailLinkSignIn} /> */}
         {/* <Stack.Screen name="Login" component={Login} /> */}
-        <Stack.Screen name="Signup" component={Signup} />
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="AddTask" component={AddTask} />
+        {/* <Stack.Screen name="Signup" component={Signup} /> */}
+        <Stack.Screen name="BottomTab" component={TabNavigator} />
+        {/* <Stack.Screen name="Home" component={Home} /> */}
+        {/* <Stack.Screen name="AddTask" component={AddTask} /> */}
       </Stack.Navigator>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {flex: 1,},
+  container: {flex: 1},
 });
