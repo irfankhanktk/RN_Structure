@@ -9,20 +9,21 @@ import {
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {StackNavigationProp} from '@react-navigation/stack';
 import React from 'react';
-import {FlatList, View} from 'react-native';
+import {FlatList, TouchableOpacity, View} from 'react-native';
 import TabParamList from 'types/navigation-types/bottom-tab';
-import {PlusButton} from '../../components/atoms/buttons';
+import Regular from 'typography/regular-text';
+import {PlusButton, PrimaryButton} from '../../components/atoms/buttons';
 import AppHeader from '../../components/atoms/headers/index';
 import {Loader} from '../../components/atoms/loader';
 import HomeCard from '../../components/molecules/cards/home-card';
-import {useAppSelector} from '../../hooks/use-store';
+import { useAppSelector, useAppDispatch } from '../../hooks/use-store';
 import {useTasks} from '../../hooks/use-tasks';
-import {onDeleteTask} from '../../services/firebase/firebase-actions';
+import {onDeleteTask, onLogoutPress} from '../../services/firebase/firebase-actions';
 import {Task} from '../../types/entities-types';
 import RootStackParamList from '../../types/navigation-types/root-stack';
 import styles from './styles';
 type props = CompositeScreenProps<
-  BottomTabScreenProps<TabParamList, 'HomeTab'>,
+  BottomTabScreenProps<TabParamList, 'UserTab'>,
   NativeStackScreenProps<RootStackParamList>
 >;
 type RenderProps = {
@@ -31,6 +32,7 @@ type RenderProps = {
 };
 const UserTab = (props: props) => {
   const userInfo = useAppSelector(s => s?.user?.userInfo);
+  const dispatch =useAppDispatch();
   const {tasks, loading} = useTasks();
 
   const renderItem = React.useCallback(({item, index}: RenderProps) => {
@@ -49,15 +51,7 @@ const UserTab = (props: props) => {
   return (
     <View style={styles.container}>
       <AppHeader title="To-do List" />
-      <FlatList
-        contentContainerStyle={styles.contentContainerStyle}
-        data={tasks}
-        renderItem={renderItem}
-      />
-      <PlusButton
-        onPress={() => props?.navigation?.navigate('AddTask')}
-        title="Add"
-      />
+      <PrimaryButton title={'Logout'} onPress={()=>dispatch(onLogoutPress(props))}/>
     </View>
   );
 };

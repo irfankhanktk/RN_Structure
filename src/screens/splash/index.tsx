@@ -6,7 +6,7 @@ import { STORAGEKEYS } from '../../config/constants';
 import { getUserData } from '../../services/firebase/firebase-actions';
 import RootStackParamList from '../../types/navigation-types/root-stack';
 import Regular from '../../typography/regular-text';
-import { SERVICES } from '../../utils';
+import { UTILS } from '../../utils';
 import { useAppDispatch, useAppSelector } from './../../hooks/use-store';
 import styles from './styles';
 type props = NativeStackScreenProps<RootStackParamList, 'Splash'>;
@@ -20,11 +20,11 @@ const Splash = (props: props) => {
   React.useEffect(() => {
 
     (async()=>{
-      let screen:'Login'|'Home' = 'Login';
-      SERVICES.getItem(STORAGEKEYS.userId).then((userId:any)=>{
+      let screen:'Login'|'BottomTab' = 'Login';
+      UTILS.getItem(STORAGEKEYS.userId).then((userId:any)=>{
       
         if(userId){
-           screen='Home';
+           screen='BottomTab';
            dispatch(getUserData(userId));
         }
         setTimeout(() => {

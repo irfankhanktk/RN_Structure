@@ -43,7 +43,7 @@ export const horizontalAnimation: any = {
 
 //   return false;
 // };
-export const SERVICES = {
+export const UTILS = {
   resetStack: (props: NavigationProps, routeName: string,params?:object) => {
     props?.navigation.dispatch(
       CommonActions.navigate({
@@ -111,7 +111,7 @@ export const SERVICES = {
   //   onError = (error:any) => {},
   // ) => {
   //   try {
-  //     const flag = await SERVICES._requestLocationPermission();
+  //     const flag = await UTILS._requestLocationPermission();
   //     if (flag) {
   //       Geolocation.getCurrentPosition(onSuccess, onError, {
   //         enableHighAccuracy: true,

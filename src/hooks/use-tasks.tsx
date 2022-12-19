@@ -4,7 +4,7 @@ import { Alert } from 'react-native';
 import { COLLECTIONS } from '../config/constants';
 import { getCurrentUserId } from '../services/firebase';
 import { Task } from '../types/entities-types';
-import { SERVICES } from '../utils';
+import { UTILS } from '../utils';
 
 export const useTasks = () => {
     const [tasks, setTasks] = useState<Task[]>([]);
@@ -31,7 +31,7 @@ export const useTasks = () => {
             // Stop listening for updates when no longer required
             return () => subscriber();
         } catch (error) {
-           Alert.alert('',SERVICES?._returnError(error))
+           Alert.alert('',UTILS?._returnError(error))
         }finally{
             setLoading(false);
         }

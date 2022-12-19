@@ -24,7 +24,6 @@ const TabNavigator = () => {
           } else if (route.name === 'UserTab') {
             iconName = 'user';
           }
-
           // You can return any component that you like here!
           return <FontAwesome name={iconName} size={size} color={color} />;
         },

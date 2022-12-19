@@ -22,7 +22,7 @@ import {Task} from '../../types/entities-types';
 import RootStackParamList from '../../types/navigation-types/root-stack';
 import styles from './styles';
 type props = CompositeScreenProps<
-  BottomTabScreenProps<TabParamList, 'HomeTab'>,
+  BottomTabScreenProps<TabParamList, 'SearchTab'>,
   NativeStackScreenProps<RootStackParamList>
 >;
 type RenderProps = {

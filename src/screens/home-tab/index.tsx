@@ -24,7 +24,7 @@ type RenderProps={
   index:number
 
 }
-const Home = (props: props) => {
+const HomeTab = (props: props) => {
   const userInfo =useAppSelector(s=>s?.user?.userInfo);
   const {tasks,loading}=useTasks();
 
@@ -45,4 +45,4 @@ const Home = (props: props) => {
     </View>
   );
 };
-export default Home;
+export default HomeTab;
