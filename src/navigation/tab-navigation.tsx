@@ -6,20 +6,21 @@ import RootStackParamList from './../types/navigation-types/root-stack';
 import AddTask from './../screens/add-task/index';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import TabParamList from '../types/navigation-types/bottom-tab';
 const Tab = createBottomTabNavigator();
-const BottomTab = createNativeStackNavigator<RootStackParamList>();
+const BottomTab = createNativeStackNavigator<TabParamList>();
 const TabNavigator = () => {
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
         tabBarIcon: ({focused, color, size}) => {
-          let iconName;
+          let iconName='Home';
 
           if (route.name === 'Home') {
             iconName = focused
-              ? 'ios-information-circle'
+              ? 'home'
               : 'ios-information-circle-outline';
-          } else if (route.name === 'Settings') {
+          } else if (route.name === 'Search') {
             iconName = focused ? 'ios-list' : 'ios-list-outline';
           }
 
@@ -29,8 +30,8 @@ const TabNavigator = () => {
         tabBarActiveTintColor: 'tomato',
         tabBarInactiveTintColor: 'gray',
       })}>
-      <BottomTab.Screen name="Home" component={Home} />
-      <BottomTab.Screen name="AddTask" component={AddTask} />
+      <BottomTab.Screen name="HomeTab" component={Home} />
+      <BottomTab.Screen name="SearchTab" component={AddTask} />
       {/* <Tab.Screen name="Settings" component={SettingsScreen} /> */}
     </Tab.Navigator>
   );

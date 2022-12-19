@@ -1,6 +1,10 @@
+import { BottomTabNavigationProp, BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import { CompositeNavigationProp, CompositeScreenProps } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
 import { FlatList, View } from 'react-native';
+import TabParamList from 'types/navigation-types/bottom-tab';
 import { PlusButton } from '../../components/atoms/buttons';
 import AppHeader from '../../components/atoms/headers/index';
 import { Loader } from '../../components/atoms/loader';
@@ -11,14 +15,16 @@ import { onDeleteTask } from '../../services/firebase/firebase-actions';
 import { Task } from '../../types/entities-types';
 import RootStackParamList from '../../types/navigation-types/root-stack';
 import styles from './styles';
-type props = NativeStackScreenProps<RootStackParamList, 'Home'>;
+type props = CompositeScreenProps<
+  BottomTabScreenProps<TabParamList, 'HomeTab'>,
+  NativeStackScreenProps<RootStackParamList>
+>;
 type RenderProps={
   item:Task
   index:number
 
 }
 const Home = (props: props) => {
-  const { navigation } = props;
   const userInfo =useAppSelector(s=>s?.user?.userInfo);
   const {tasks,loading}=useTasks();
 
