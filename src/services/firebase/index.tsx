@@ -5,37 +5,40 @@ import auth from '@react-native-firebase/auth';
 import Rnfirestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 import { setUserInfo } from '../../store/reducers/user-reducer';
-import { SERVICES } from '../../utils';
+import { UTILS } from 'utils';
 
-export const getCurrentUserId=()=>auth()?.currentUser?.uid;
+export const getCurrentUserId = () => auth()?.currentUser?.uid;
 
-export const createUserWithEmailAndPassword = async (name:string,email:string,password:string) => {
-  try {
-   const res= await auth().createUserWithEmailAndPassword(email, password);
-   console.log('RES: SIGNUP',res);
-   
-   return res;
-  } catch (error: any) {
-    if (error.code === 'auth/email-already-in-use') {
-      console.log('That email address is already in use!');
-    }else if (error.code === 'auth/invalid-email') {
-      console.log('That email address is invalid!');
-    }
-    throw SERVICES._returnError(error);
-  }
+export const logout = async () => {
+  await auth().signOut();
 }
-export const signInWithEmailAndPassword = async (email:string,password:string) => {
-
+export const createUserWithEmailAndPassword = async (name: string, email: string, password: string) => {
   try {
-    const res=await auth().signInWithEmailAndPassword(email, password);
+    const res = await auth().createUserWithEmailAndPassword(email, password);
+    console.log('RES: SIGNUP', res);
+
     return res;
   } catch (error: any) {
     if (error.code === 'auth/email-already-in-use') {
       console.log('That email address is already in use!');
-    }else if (error.code === 'auth/invalid-email') {
+    } else if (error.code === 'auth/invalid-email') {
       console.log('That email address is invalid!');
     }
-    throw SERVICES._returnError(error);
+    throw UTILS.returnError(error);
+  }
+}
+export const signInWithEmailAndPassword = async (email: string, password: string) => {
+
+  try {
+    const res = await auth().signInWithEmailAndPassword(email, password);
+    return res;
+  } catch (error: any) {
+    if (error.code === 'auth/email-already-in-use') {
+      console.log('That email address is already in use!');
+    } else if (error.code === 'auth/invalid-email') {
+      console.log('That email address is invalid!');
+    }
+    throw UTILS.returnError(error);
   }
 }
 
@@ -72,7 +75,7 @@ export const saveData = async (
   try {
     const ref = Rnfirestore().collection(collection);
 
-    const obj = SERVICES._removeEmptyKeys(jsonObject);
+    const obj = UTILS._removeEmptyKeys(jsonObject);
     const res = await ref.doc(doc).set(obj, { merge: true });
     return res;
   } catch (error) {
@@ -87,7 +90,7 @@ export const updateDocument = async (
 ) => {
   try {
     const ref = Rnfirestore().collection(collection);
-    const obj = SERVICES._removeEmptyKeys(jsonObject);
+    const obj = UTILS._removeEmptyKeys(jsonObject);
     const res = await ref.doc(doc).update(obj);
     return res;
   } catch (error) {
@@ -104,7 +107,7 @@ export const deleteDocument = async (
     await ref.doc(docId).delete();
   } catch (error) {
     console.log('error::', error);
-    throw SERVICES?._returnError(error);
+    throw UTILS?.returnError(error);
   }
 };
 export const isDocumentExists = async (
@@ -113,14 +116,14 @@ export const isDocumentExists = async (
 ) => {
   try {
     const ref = Rnfirestore().collection(collection);
-   const documentSnapshot=await ref.doc(docId).get();
+    const documentSnapshot = await ref.doc(docId).get();
     return documentSnapshot.exists;
   } catch (error) {
     console.log('error::', error);
-    throw SERVICES?._returnError(error);
+    throw UTILS?.returnError(error);
   }
 };
-export const getData = async(collection: string, doc: string) => {
+export const getData = async (collection: string, doc: string) => {
   return Rnfirestore()
     .collection(collection)
     .doc(doc)
@@ -131,7 +134,7 @@ export const getData = async(collection: string, doc: string) => {
       } else {
         throw 'user does not exists';
       }
-    }).catch(error=>{throw SERVICES?._returnError(error)});
+    }).catch(error => { throw UTILS?.returnError(error) });
 };
 export const getDatabyKey = async (
   collection: string,
@@ -191,7 +194,7 @@ export const removeItemfromArrayValue = async (
   array: number,
   value: any,
 ) => {
-  let docRef = await Rnfirestore().collection(collection).doc(doc);
+  let docRef = Rnfirestore().collection(collection).doc(doc);
   let docData: any = await docRef.get();
 
   if (docData.exists && docData && docData.data()[array] != undefined) {
@@ -208,12 +211,12 @@ export const addToArray = async (
 ) => {
   try {
     let docRef = Rnfirestore().collection(collection).doc(doc);
-      docRef.update({
-        [array]: Rnfirestore.FieldValue.arrayUnion(value),
-      });
-    
+    docRef.update({
+      [array]: Rnfirestore.FieldValue.arrayUnion(value),
+    });
+
   } catch (error) {
-    throw SERVICES._returnError(error)
+    throw UTILS.returnError(error)
   }
 };
 export const removeFromArray = async (
@@ -224,12 +227,12 @@ export const removeFromArray = async (
 ) => {
   try {
     let docRef = Rnfirestore().collection(collection).doc(doc);
-      docRef.update({
-        [arrayName]: Rnfirestore.FieldValue.arrayRemove(value),
-      });
-    
+    docRef.update({
+      [arrayName]: Rnfirestore.FieldValue.arrayRemove(value),
+    });
+
   } catch (error) {
-    throw SERVICES._returnError(error)
+    throw UTILS.returnError(error)
   }
 };
 export const filterArrayCollections = async (
@@ -264,7 +267,7 @@ export const filterArrayCollections = async (
     // after all of the data is fetched, return it
     return Promise.all(batches).then(content => content);
   } catch (error) {
-    throw new Error(SERVICES._returnError(error));
+    throw new Error(UTILS.returnError(error));
   }
 };
 export const filterCollections = async (
@@ -282,13 +285,13 @@ export const filterCollections = async (
     });
     return data;
   } catch (error) {
-    throw new Error(SERVICES._returnError(error));
+    throw new Error(UTILS.returnError(error));
   }
 };
 
 //you can execute multiple write operations as a single batch that contains any combination of set,
 // update, or delete operations. A batch of writes completes atomically and can write to multiple documents.
-export async function insertBatch(collection :string, array: any[] = [], is_doc = true) {
+export async function insertBatch(collection: string, array: any[] = [], is_doc = true) {
   try {
     const db = Rnfirestore();
     const batch = db.batch();
@@ -304,29 +307,29 @@ export async function insertBatch(collection :string, array: any[] = [], is_doc 
     return batch.commit();
   } catch (error) {
     console.log('error:', error);
-    throw new Error(SERVICES._returnError(error));
+    throw new Error(UTILS.returnError(error));
   }
 }
 
 //transaction example for like post
-export const onPostLike=(postId:string) =>{
+export const onPostLike = (postId: string) => {
   try {
-    
+
     // Create a reference to the post
     const postReference = Rnfirestore().doc(`posts/${postId}`);
-  
+
     return Rnfirestore().runTransaction(async transaction => {
       // Get post data first
       const postSnapshot = await transaction.get(postReference);
-  
+
       if (!postSnapshot.exists) {
         throw 'Post does not exist!';
-      }else
-      transaction.update(postReference, {
-        likes: postSnapshot?.data()?.likes + 1,
-      });
+      } else
+        transaction.update(postReference, {
+          likes: postSnapshot?.data()?.likes + 1,
+        });
     });
   } catch (error) {
-    throw new Error(SERVICES._returnError(error));
+    throw new Error(UTILS.returnError(error));
   }
 }

@@ -1,44 +1,64 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { SplashIcon } from 'assets/icons';
+import { splash_bg } from 'assets/images';
 import React from 'react';
-import { View } from 'react-native';
-import RootStackParamList from '../../types/navigation-types/root-stack';
-import styles from './styles';
-type props = NativeStackScreenProps<RootStackParamList, 'Splash'>;
-import Config from 'react-native-config';
-import { useAppDispatch, useAppSelector } from './../../hooks/use-store';
-import Regular from '../../typography/regular-text';
-import { SERVICES } from '../../utils';
+import { ImageBackground, View } from 'react-native';
+import i18n from 'translation';
 import { STORAGEKEYS } from '../../config/constants';
-import { getUserData } from '../../services/firebase/firebase-actions';
+import { setLanguage, setLocation, setUserInfo } from '../../store/reducers/user-reducer';
+import RootStackParamList from '../../types/navigation-types/root-stack';
+import { UTILS } from 'utils';
+import { useAppDispatch } from 'hooks/use-store';
+import styles from './styles';
+import { mvs, width } from 'config/metrices';
+type props = NativeStackScreenProps<RootStackParamList, 'Splash'>;
 
 const Splash = (props: props) => {
-  const {navigation} =props;
-  const dispatch =useAppDispatch();
-  const store =useAppSelector(s=>s);
-  console.log('Config::',Config.BASE_URL);
-  
+  const { navigation } = props;
+  const dispatch = useAppDispatch();
+
+  React.useEffect(() => {
+  }, [])
   React.useEffect(() => {
 
-    (async()=>{
-      let screen:'Login'|'Home' = 'Login';
-      SERVICES.getItem(STORAGEKEYS.userId).then((userId:any)=>{
-      
-        if(userId){
-           screen='Home';
-           dispatch(getUserData(userId));
-        }
-        setTimeout(() => {
-          navigation?.replace(screen);
-        }, 2000);
-       })
+    (async () => {
+      try {
+        let screen: any = 'Onboarding';
+        UTILS.get_current_location((position) => {
+          dispatch(setLocation({
+            latitude: position?.coords?.latitude,
+            longitude: position?.coords?.longitude
+          }))
+
+        }, (error) => {
+
+        })
+        UTILS.getItem(STORAGEKEYS.lang).then((lang: any) => {
+          i18n.changeLanguage(lang);
+          dispatch(setLanguage(lang ?? 'en'));
+        })
+
+        UTILS.getItem(STORAGEKEYS.user).then((data: any) => {
+          if (data) {
+            const user = JSON.parse(data);
+            screen = 'Onboarding';
+            dispatch(setUserInfo(user));
+          }
+          setTimeout(() => {
+            navigation?.replace(screen);
+          }, 2000);
+        });
+
+      } catch (error) {
+
+      }
     })()
   }, []);
 
 
   return (
-    <View style={{...styles.container}}>
-      <Regular style={styles.welcomeText} label={'Welcome to to-do'}/>
+    <View style={{ ...styles.container }}>
+      <SplashIcon width={width - mvs(60)} />
     </View>
   );
 };
